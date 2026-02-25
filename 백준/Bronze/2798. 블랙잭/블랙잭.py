@@ -1,38 +1,39 @@
-
 N, M = map(int, input().split())
 numbers = list(map(int, input().split()))
 # print(numbers)
-flg = True
+
 total = 0
-max_total = []
+max_total = 0
 
-# 첫번째 카드 설정
-for i in range(N):
-  total += numbers[i]
-  
-  # 두번째 카드 설정
-  for j in range(i+1, N):
-    total += numbers[j]
-   
-    # 세번째 카드 설정
-    for k in range(j+1, N):
-      total += numbers[k]
-     
-      # 다 돌았는데, total이 M보다 크면 break
-      if total > M:
-        total -= numbers[k]
-        # print(total)
-        continue  
-        
-      # 아니라면 total을 max_total list에 넣기
-      else:
-        max_total.append(total)    
-        total -= numbers[k]
-  
-    total -=numbers[j]
+def recur(cnt, idx):
+    global total
+    global max_total
 
-  total -= numbers[i]  
-      
-   
-print(max(max_total))
+    # 종료조건: 카드를 3장 뽑았을떄
+    if cnt == 3 :
+        # 그 카드들의 합이 21 이하일때, 최댓갑을 갱신
+        if M >= total:
+            max_total = max(max_total, total)
 
+        # if M >= total > max_total:
+        #     max_total = total
+
+        return
+    
+    # 이미 기준값을 넘겼을 경우
+    if total > M:
+        return
+
+    # 반복할 동작
+    for i in range(idx, N):
+        total += numbers[i]
+
+        recur(cnt+1, i+1)
+        # 종료조건을 만나서 다음턴으로 갈 작업
+        total -= numbers[i]   
+
+
+# 초기 입력값
+recur(0, 0)
+
+print(max_total)
