@@ -6,7 +6,34 @@
 # 최종 결과물: 각 테케의 섬의 갯수 출력
 #import sys
 #sys.stdin = open("input.txt", "r")
+
+# # 추가로 데이터 입력 빠르게 받기
+import sys 
+input = sys.stdin.readline
+
 from collections import deque
+
+
+    # 섬 넓이 탐색기 설정
+def bfs(start_x, start_y):
+    # 큐 지정 및 시작점 지정
+    queue = deque([(start_x, start_y)])
+    # 시작점 방문처리
+    visited[start_x][start_y] = 1
+    # queue 빌때까지 반복
+    while queue:
+    # 큐에 가장 앞에 있는 값 꺼내서 현재좌표로 삼기
+        x, y = queue.popleft()
+        # 상하좌우 + 대각선 탐색
+        for i in range(8):
+            nx = x + dx[i]
+            ny = y + dy[i]
+            #유효한 범위인지 확인
+            if 0<= nx < h and 0<= ny <w:
+                if visited[nx][ny] == 0 and mapp[nx][ny]==1:
+                    # 유효한 범위라면 방문기록 및 큐 저장
+                    visited[nx][ny] = 1
+                    queue.append((nx, ny)) 
 
 # 입력 받기
 while True:
@@ -29,26 +56,7 @@ while True:
     dy = [0, 0, -1, 1, -1, -1, 1, 1]
     
 
-    # 섬 넓이 탐색기 설정
-    def bfs(start_x, start_y):
-        # 큐 지정 및 시작점 지정
-        queue = deque([(start_x, start_y)])
-        # 시작점 방문처리
-        visited[start_x][start_y] = 1
-        # queue 빌때까지 반복
-        while queue:
-            # 큐에 가장 앞에 있는 값 꺼내서 현재좌표로 삼기
-            x, y = queue.popleft()
-            # 상하좌우 + 대각선 탐색
-            for i in range(8):
-                nx = x + dx[i]
-                ny = y + dy[i]
-                #유효한 범위인지 확인
-                if 0<= nx < h and 0<= ny <w:
-                    if visited[nx][ny] == 0 and mapp[nx][ny]==1:
-                        # 유효한 범위라면 방문기록 및 큐 저장
-                        visited[nx][ny] = 1
-                        queue.append((nx, ny)) 
+
                 
     cnt = 0
     # 시작점 (1인 지점) 찾기
